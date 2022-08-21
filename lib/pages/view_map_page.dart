@@ -50,8 +50,8 @@ class _ViewMapPageState extends State<ViewMapPage> {
           snippet: p.description,
           onTap: () {
             PlaceService.delete(p.id!);
-            _lastMark = null;
             setState(() {
+              _lastMark = null;
               _markers.remove(m);
             });
           },
@@ -85,7 +85,7 @@ class _ViewMapPageState extends State<ViewMapPage> {
     _controller.moveCamera(CameraUpdate.newLatLngBounds(b, 40));
   }
 
-  void _onLongPress(LatLng coord) async {
+  void _onLongPress(LatLng ll) async {
     if (_lastMark != null) {
       final shown = await _controller.isMarkerInfoWindowShown(_lastMark!);
       if (shown) _controller.hideMarkerInfoWindow(_lastMark!);
@@ -131,15 +131,16 @@ class _ViewMapPageState extends State<ViewMapPage> {
             TextButton(
               onPressed: () {
                 if (formKey.currentState!.validate()) {
-                  final p = Place(title, snippet, coord.latitude,
-                      coord.longitude, _userMapId);
-                  PlaceService.insert(p);
-                  setState(() {
-                    _markers.add(_placeToMarker(p));
+                  final p = Place(title, snippet, ll.latitude,
+                      ll.longitude, _userMapId);
+                  PlaceService.insert(p).then((pp) {
+                    setState(() {
+                      _markers.add(_placeToMarker(pp));
+                    });
                   });
                   Navigator.pop(context);
                   _controller.moveCamera(CameraUpdate
-                      .newLatLng(LatLng(coord.latitude, coord.longitude)));
+                      .newLatLng(LatLng(ll.latitude, ll.longitude)));
                 }
               },
               child: const Text('OK'),

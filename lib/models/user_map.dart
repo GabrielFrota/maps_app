@@ -28,16 +28,17 @@ class UserMapService with ChangeNotifier {
   static getInstanceForProvider() => _instance;
 
   static Future<List<UserMap>> findAll() async {
-    final lu = <UserMap>[];
+    final l = <UserMap>[];
     final users = await getDb().query('user_map');
     for (var u in users)
-      lu.add(UserMap.fromDbMap(u));
-    return lu;
+      l.add(UserMap.fromDbMap(u));
+    return l;
   }
 
   static Future<UserMap> findById(int id) async {
     final places = await PlaceService.findAll(id);
-    final userMap = await getDb().query('user_map', where: 'id = ?', whereArgs: [id]);
+    final userMap = await getDb().query('user_map',
+        where: 'id = ?', whereArgs: [id]);
     return UserMap.fromDbMap(userMap.single, places);
   }
 

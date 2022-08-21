@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class Utils {
   Utils._();
 
-  static FormFieldValidator<String>? emptyCheck = (val) {
-    return val == null || val.isEmpty ? 'Cannot be empty' : null;
+  static FormFieldValidator<String>? emptyCheck = (text) {
+    return text == null || text.isEmpty ? 'Cannot be empty' : null;
   };
 }

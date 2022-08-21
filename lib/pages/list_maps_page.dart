@@ -13,8 +13,6 @@ class ListMapsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
         title: Text(appBarTitle),
       ),
       body: ChangeNotifierProvider<UserMapService>.value(
@@ -31,7 +29,7 @@ class ListMapsPage extends StatelessWidget {
           });
         },
         child: Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+      ),
     );
   }
 }
@@ -51,9 +49,9 @@ class _ListViewWrapper extends StatelessWidget {
           return ListView.builder(
               itemCount: maps.length,
               itemBuilder: (context, index) {
-                final k = GlobalKey();
+                final tileKey = GlobalKey();
                 return ListTile(
-                  key: k,
+                  key: tileKey,
                   title: Text(maps[index].title),
                   onTap: () {
                     Navigator.push<void>(
@@ -63,7 +61,7 @@ class _ListViewWrapper extends StatelessWidget {
                                 ViewMapPage(userMapId: maps[index].id)));
                   },
                   onLongPress: () {
-                    _showPopupMenu(context, k).then((option) {
+                    _showPopupMenu(context, tileKey).then((option) {
                       if (option == 1) {
                         final userMap = maps[index];
                         _showTitleDialog(context).then((title) {
@@ -146,6 +144,6 @@ Future<int?> _showPopupMenu(BuildContext context, GlobalKey key) {
   for (var e in menuEntries) menuHeight += e.height;
   final menuPosition = RelativeRect.fromLTRB(rect.left + 16, rect.top + 16,
       rect.right - 16, rect.top + 16 + menuHeight);
-  return showMenu<int>(
-      context: context, position: menuPosition, items: menuEntries);
+  return showMenu<int>(context: context,
+      position: menuPosition, items: menuEntries);
 }
